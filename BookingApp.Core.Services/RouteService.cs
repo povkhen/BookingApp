@@ -12,7 +12,6 @@ namespace BookingApp.Core.Services
     public class RouteService : IRouteService
     {
         protected readonly IContext _context;
-        public RouteService() : this (new Context()) { }
        
         public RouteService(IContext context)
         {

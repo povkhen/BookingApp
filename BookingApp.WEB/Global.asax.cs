@@ -1,4 +1,8 @@
-﻿using System;
+﻿using BookingApp.WEB.Util;
+using Ninject;
+using Ninject.Modules;
+using Ninject.Web.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +20,11 @@ namespace BookingApp.WEB
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //Ninject
+            NinjectModule registrations = new NinjectRegistrations();
+            var kernel = new StandardKernel(registrations);
+            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
 }

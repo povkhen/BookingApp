@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace BookingApp.Data
@@ -7,7 +8,7 @@ namespace BookingApp.Data
     {
         public static SqlConnection SqlConnection()
         {
-            string connectionString = "Data Source=MEO;Initial Catalog=BookingDB;Integrated Security=True";
+            string connectionString = ConfigurationManager.ConnectionStrings["BookingDB"].ConnectionString;
             return new SqlConnection(connectionString);
         }
         public static IDbConnection CreateConnection()

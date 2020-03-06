@@ -5,7 +5,6 @@ namespace BookingApp.ConsoleUI
 {
     class Runner
     {
-
         static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
