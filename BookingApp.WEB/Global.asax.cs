@@ -1,11 +1,8 @@
-﻿using BookingApp.WEB.Util;
+﻿using BookingApp.Core.Infrastructure;
+using BookingApp.WEB.Utils;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -22,8 +19,9 @@ namespace BookingApp.WEB
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //Ninject
-            NinjectModule registrations = new NinjectRegistrations();
-            var kernel = new StandardKernel(registrations);
+            NinjectModule registrations = new NinjectRegistration();
+            NinjectModule serviceModule = new ServiceModule();
+            var kernel = new StandardKernel(registrations, serviceModule);
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }

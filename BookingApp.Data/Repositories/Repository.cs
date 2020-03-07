@@ -1,6 +1,5 @@
-﻿using BookingApp.Core.DataService;
-using BookingApp.Core.Entities;
-using BookingApp.Data;
+﻿using BookingApp.Data.Entities;
+using BookingApp.Data.Interfaces;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingApp.Static.Data.Repositories
+namespace BookingApp.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {

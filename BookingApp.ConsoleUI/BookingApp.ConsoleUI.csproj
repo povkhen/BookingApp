@@ -60,17 +60,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BookingApp.Core.Entities\BookingApp.Core.Entities.csproj">
-      <Project>{63634562-4725-4996-b68b-42eb49cfa514}</Project>
-      <Name>BookingApp.Core.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BookingApp.Core.Services\BookingApp.Core.Services.csproj">
-      <Project>{b77937a6-975d-4907-907d-6ee06533e155}</Project>
-      <Name>BookingApp.Core.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BookingApp.Core\BookingApp.Core.csproj">
       <Project>{a5d59008-ed36-4f49-ae44-2a24c11347cc}</Project>
       <Name>BookingApp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BookingApp.Data\BookingApp.Data.csproj">
+      <Project>{8C34DB81-1865-4683-ABF7-AD543E0A1992}</Project>
+      <Name>BookingApp.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

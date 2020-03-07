@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookingApp.Core.Entities\BookingApp.Core.Entities.csproj" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookingApp.Data\BookingApp.Data.csproj" />
   </ItemGroup>
 
 </Project>

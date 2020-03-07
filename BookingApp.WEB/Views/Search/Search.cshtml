@@ -1,0 +1,72 @@
+﻿@model IEnumerable<BookingApp.WEB.Models.SearchTripViewModel>
+
+@{
+    ViewBag.Title = "Search Page";
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Input departure station</h2>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Input arrival station</h2>
+            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Сhoose date</h2>
+            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+
+        </div>
+    </div>
+</div>
+<table class="mainTable table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Train)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Route)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartureTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ArrivalTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Train)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Route)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartureTime.Date)<br />
+            @Html.DisplayFor(modelItem => item.ArrivalTime.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartureTime.TimeOfDay)<br />
+            @Html.DisplayFor(modelItem => item.ArrivalTime.TimeOfDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+    </tr>
+    }
+</table>

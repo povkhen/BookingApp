@@ -1,5 +1,5 @@
-﻿using BookingApp.Core.DataService;
-using BookingApp.Core.Entities.Procedure_Models;
+﻿using BookingApp.Data.Entities.Procedure_Models;
+using BookingApp.Data.Interfaces;
 using Dapper;
 using System;
 using System.Collections.Generic;

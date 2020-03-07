@@ -1,11 +1,10 @@
-﻿using BookingApp.Core.ApplicationService;
-using BookingApp.Core.DataService;
+﻿using BookingApp.Core.Interfaces;
 using BookingApp.Core.Services;
+using BookingApp.Data;
+using BookingApp.Data.Interfaces;
 using EasyConsole;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ namespace BookingApp.ConsoleUI.Pages
         public Page1(Program program)
            : base("Всі можливі поїзди", program )
         {
-            _service = new RouteService((IContext)new Context());
+            _service = new RouteService((IUnitOfWork)new UnitOfWork());
             Console.InputEncoding = Encoding.Unicode;
    
         }

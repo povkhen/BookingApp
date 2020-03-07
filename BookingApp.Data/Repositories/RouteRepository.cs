@@ -1,6 +1,5 @@
-﻿using BookingApp.Core.DataService;
-using BookingApp.Core.Entities;
-using BookingApp.Static.Data.Repositories;
+﻿using BookingApp.Data.Entities;
+using BookingApp.Data.Interfaces;
 using Dapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
