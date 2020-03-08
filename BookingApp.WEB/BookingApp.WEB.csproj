@@ -145,6 +145,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PagingHelpers.cs" />
+    <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\SeatSearchViewModel.cs" />
     <Compile Include="Models\SearchTripViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,6 +4,7 @@ using BookingApp.Core.Interfaces;
 using BookingApp.WEB.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -28,12 +29,17 @@ namespace BookingApp.WEB.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Search()
+        public async Task<ActionResult> Search(int page = 1)
         {
-            IEnumerable<TripSearchDTO> tripsDTOs = await _service.SearchTrip("Львів","Рівне",DateTime.Parse("2020-03-30"));
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TripSearchDTO, SearchTripViewModel>()).CreateMapper();
+            IEnumerable<TripSearchDTO> tripsDTOs = await _service.SearchTrip("Львів","Рівне",DateTime.Parse("2020-03-30"));
             var trips = mapper.Map<IEnumerable<TripSearchDTO>, List<SearchTripViewModel>>(tripsDTOs);
-            return View(trips);
+            
+            int pageSize = 3; 
+            IEnumerable<SearchTripViewModel> phonesPerPages = trips.Skip((page - 1) * pageSize).Take(pageSize);
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = trips.Count };
+            IndexViewModel<SearchTripViewModel> ivm = new IndexViewModel<SearchTripViewModel>{ PageInfo = pageInfo, Models = phonesPerPages };
+            return View(ivm);
         }
     }
 }

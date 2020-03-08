@@ -2,8 +2,8 @@
     font-family: "Arial Black", Gadget, sans-serif;
     border: 0px solid #FF8D83;
     background-color: #EEEEEE;
-    width: 100%;
-    height: 300px;
+    display: table;
+    table-layout: auto;
     text-align: left;
 }
 
