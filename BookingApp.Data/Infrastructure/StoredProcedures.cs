@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace BookingApp.Data
+namespace BookingApp.Data.Infrastructure
 {
     public class StoredProcedures : IStoredProcedures
     {
         public async Task<IEnumerable<TripSearch>> GetSearchTrips(string departureStation, string arrivalStation, DateTime date)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 string sqlFormattedDate = date.ToString("yyyy-MM-dd");
                 var procedure = "[route].[SEARCHPROC]";
@@ -24,7 +24,7 @@ namespace BookingApp.Data
 
         public async Task<IEnumerable<TypeCarSeats>> GetFreeGroupingSeats(Guid tripId, string from, string to)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 var procedure = "[schedule].[GET_GROUPING_SEATS]";
                 var values = new {From = from, To = to, TripId = tripId };
@@ -35,7 +35,7 @@ namespace BookingApp.Data
 
         public async Task<IEnumerable<dynamic>> GetRouteInfo(string route)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 var procedure = "[route].[ORDERED_STATIONS]";
                 var values = new { Route = route };

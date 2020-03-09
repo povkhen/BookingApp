@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BookingApp.Core.BusinessModels;
+using System.Collections.Generic;
 
 namespace BookingApp.WEB.Models
 {

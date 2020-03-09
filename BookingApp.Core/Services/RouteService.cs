@@ -2,76 +2,155 @@
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using AutoMapper;
+
 using BookingApp.Data.Interfaces;
 using BookingApp.Data.Entities.Procedure_Models;
+using BookingApp.Data.Infrastructure;
 using BookingApp.Core.Interfaces;
 using BookingApp.Core.DTO;
-using AutoMapper;
 
 namespace BookingApp.Core.Services
 {
     public class RouteService : IRouteService
     {
-        protected readonly IUnitOfWork _unitOfWork;
-       
-        public RouteService(IUnitOfWork unitOfWork)
+        protected readonly IDALSession _dalSession;
+        protected readonly IContext _context;
+
+        public RouteService(IDALSession dalSession, IContext context)
         {
-            _unitOfWork = unitOfWork;
+            _dalSession = dalSession;
+            _context = context;
         }
 
         public async Task<bool> ExistStationByName(string name)
         {
-            try
+            using (_dalSession)
             {
-                await _unitOfWork.StationRepo.FindStationByNameAsync(name);                
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    await _context.StationRepo.FindStationByNameAsync(name);
+                    unitOfWork.Commit();
+                }
+                catch (KeyNotFoundException)
+                {
+                    unitOfWork.Rollback();
+                    return false;
+                }
+                return true;    
             }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
-            return true;
-             
         }
 
         public async Task<bool> ExistRouteByName(string name)
         {
-            try
+            using (_dalSession)
             {
-                await _unitOfWork.RouteRepo.FindRouteByNameAsync(name);
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
-            return true;
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    await _context.RouteRepo.FindRouteByNameAsync(name);
+                    unitOfWork.Commit();
+                    
+                }
+                catch (KeyNotFoundException)
+                {
+                    unitOfWork.Rollback();
+                    return false;
+                }
+                return true;
 
+            }
         }
 
         public async Task<IEnumerable<string>> GetAllTypesCarName()
         {
-            var typeCars = await _unitOfWork.TypeCarRepo.GetAllAsync();
-            return typeCars.ToList().Select(x => x.Name);
+            using (_dalSession)
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var typeCars = await _context.TypeCarRepo.GetAllAsync();
+                    unitOfWork.Commit();
+                    return typeCars.ToList().Select(x => x.Name);
+
+                }
+                catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
         }
 
         public async Task<dynamic> GetRouteInfo(string route)
         {
-            return await _unitOfWork.StoredProcedures.GetRouteInfo(route);
+            using (_dalSession)
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var inforoute = await _context.StoredProcedures.GetRouteInfo(route);
+                    unitOfWork.Commit();
+                    return inforoute;
+
+                }
+                catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
         }
 
         public async Task<IEnumerable<TypeCarSeatsDTO>> SearchFreeSeatById(Guid id, string from, string to)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TypeCarSeats,TypeCarSeatsDTO>()).CreateMapper();
-            var seats = await _unitOfWork.StoredProcedures.GetFreeGroupingSeats(id, from, to);
-            var res = mapper.Map<IEnumerable<TypeCarSeats>, IEnumerable<TypeCarSeatsDTO>>(seats);
-            return await Task.FromResult(res);
+            using (_dalSession)
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TypeCarSeats, TypeCarSeatsDTO>()).CreateMapper();
+                    var seats = await _context.StoredProcedures.GetFreeGroupingSeats(id, from, to);
+                    var res = mapper.Map<IEnumerable<TypeCarSeats>, IEnumerable<TypeCarSeatsDTO>>(seats);
+                    unitOfWork.Commit();
+                    return await Task.FromResult(res);                   
+
+                }
+                catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
         }
 
         public async Task<IEnumerable<TripSearchDTO>> SearchTrip(string departureStatiom, string arrivalStation, DateTime date)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TripSearch, TripSearchDTO>()).CreateMapper();
-            var trips =  await _unitOfWork.StoredProcedures.GetSearchTrips(departureStatiom, arrivalStation, date);
-            var res = mapper.Map<IEnumerable<TripSearch>, List<TripSearchDTO>>(trips);
-            return await Task.FromResult(res);
+            using (_dalSession)
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TripSearch, TripSearchDTO>()).CreateMapper();
+                    var trips = await _context.StoredProcedures.GetSearchTrips(departureStatiom, arrivalStation, date);
+                    var res = mapper.Map<IEnumerable<TripSearch>, List<TripSearchDTO>>(trips);
+                    unitOfWork.Commit();
+                    return await Task.FromResult(res);
+
+                }
+                catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
         }
     }
 }

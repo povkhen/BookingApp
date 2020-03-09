@@ -1,7 +1,6 @@
 ﻿using BookingApp.Core.Interfaces;
 using BookingApp.Core.Services;
-using BookingApp.Data;
-using BookingApp.Data.Interfaces;
+using BookingApp.Data.Infrastructure;
 using EasyConsole;
 using System;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace BookingApp.ConsoleUI.Pages
         public Page1(Program program)
            : base("Всі можливі поїзди", program )
         {
-            _service = new RouteService((IUnitOfWork)new UnitOfWork());
+            _service = new RouteService(new DalSession(), new Data.Infrastructure.Context());
             Console.InputEncoding = Encoding.Unicode;
    
         }

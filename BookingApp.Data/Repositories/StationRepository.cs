@@ -1,4 +1,5 @@
 ﻿using BookingApp.Data.Entities;
+using BookingApp.Data.Infrastructure;
 using BookingApp.Data.Interfaces;
 using Dapper;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BookingApp.Data.Repositories
 
         public async Task<Station> FindStationByNameAsync(string name)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 var result = await connection.QuerySingleOrDefaultAsync<Station>($"SELECT * FROM {_tableName} WHERE Name=@Name", new { Name = name });
                 if (result == null)

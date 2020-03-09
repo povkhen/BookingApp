@@ -1,4 +1,5 @@
 ﻿using BookingApp.Data.Entities;
+using BookingApp.Data.Infrastructure;
 using BookingApp.Data.Interfaces;
 using Dapper;
 using System;
@@ -14,7 +15,6 @@ namespace BookingApp.Data.Repositories
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly string _tableName;
-
         public Repository(string tableName)
         {
             _tableName = tableName;
@@ -32,7 +32,7 @@ namespace BookingApp.Data.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 return await connection.QueryAsync<T>($"SELECT * FROM {_tableName}");
             }
@@ -40,7 +40,7 @@ namespace BookingApp.Data.Repositories
 
         public async Task DeleteRowAsync(Guid id)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 await connection.ExecuteAsync($"DELETE FROM {_tableName} WHERE Id=@Id", new { Id = id });
             }
@@ -48,7 +48,7 @@ namespace BookingApp.Data.Repositories
 
         public async Task<T> GetAsync(Guid id)
         {
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 var result = await connection.QuerySingleOrDefaultAsync<T>($"SELECT * FROM {_tableName} WHERE Id=@Id", new { Id = id });
                 if (result == null)
@@ -62,7 +62,7 @@ namespace BookingApp.Data.Repositories
         {
             var inserted = 0;
             var query = GenerateInsertQuery();
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 inserted += await connection.ExecuteAsync(query, list);
             }
@@ -74,7 +74,7 @@ namespace BookingApp.Data.Repositories
         {
             var insertQuery = GenerateInsertQuery();
 
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 await connection.ExecuteAsync(insertQuery, t);
             }
@@ -106,7 +106,7 @@ namespace BookingApp.Data.Repositories
         {
             var updateQuery = GenerateUpdateQuery();
 
-            using (var connection = ConnectionFactory.CreateConnection())
+            using (var connection = DBConnection.CreateConnection())
             {
                 await connection.ExecuteAsync(updateQuery, t);
             }

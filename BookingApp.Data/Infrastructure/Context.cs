@@ -3,10 +3,11 @@ using BookingApp.Data.Interfaces;
 using BookingApp.Data.Repositories;
 
 
-namespace BookingApp.Data
+namespace BookingApp.Data.Infrastructure
 {
-    public class UnitOfWork : IUnitOfWork
+    public class Context : IContext
     {
+
         private IStoredProcedures _procedures;
         private IStationRepository _stationRepo;
         private IRouteRepository _routeRepo;
@@ -24,7 +25,6 @@ namespace BookingApp.Data
         private readonly IRepository<TypeCar> _typeCarRepo;
         private readonly IRepository<TypeCustomer> _typeCustomerRepo;
         private readonly IRepository<TypeSeat> _typeSeatRepo;
-
 
         private IRepository<T> CreateRepo<T>(IRepository<T> _repo, string name) where T: BaseEntity
         {

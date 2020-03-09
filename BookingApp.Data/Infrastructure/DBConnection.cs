@@ -2,9 +2,9 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace BookingApp.Data
+namespace BookingApp.Data.Infrastructure
 {
-    public static class ConnectionFactory
+    public static class DBConnection
     {
         public static SqlConnection SqlConnection()
         {

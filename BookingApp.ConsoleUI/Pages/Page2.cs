@@ -1,7 +1,6 @@
 ﻿using BookingApp.Core.Interfaces;
 using BookingApp.Core.Services;
-using BookingApp.Data;
-using BookingApp.Data.Interfaces;
+using BookingApp.Data.Infrastructure;
 using EasyConsole;
 using System;
 using System.Text;
@@ -15,7 +14,7 @@ namespace BookingApp.ConsoleUI.Pages
         public Page2(Program program)
            : base("Детальна інформація про маршрут", program)
         {
-            _service = new RouteService((IUnitOfWork)new UnitOfWork());
+            _service = new RouteService(new DalSession(), new Data.Infrastructure.Context());
             Console.InputEncoding = Encoding.Unicode;
         }
         public override void Display()
