@@ -9,9 +9,10 @@ namespace BookingApp.Core.Interfaces
     {
         Task<IEnumerable<TripSearchDTO>> SearchTrip(string departureStatiom, string arrivalStation, DateTime date);
         Task<IEnumerable<TypeCarSeatsDTO>> SearchFreeSeatById(Guid id, string from, string to);
+        Task<IEnumerable<string>> GetAllTypesCarName();
+        Task<IEnumerable<string>> GetAllStationsName();
         Task<bool> ExistStationByName(string name);
         Task<bool> ExistRouteByName(string name);
-        Task<IEnumerable<string>> GetAllTypesCarName();
         Task<dynamic> GetRouteInfo(string route);
     }
 }

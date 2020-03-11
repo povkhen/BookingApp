@@ -1,0 +1,72 @@
+﻿table.mainTable {
+    font-family: "Arial Black", Gadget, sans-serif;
+    border: 0px solid #FF8D83;
+    background-color: #EEEEEE;
+    display: table;
+    table-layout: auto;
+    text-align: left;
+}
+
+table.mainTable td, table.mainTable th {
+    border: 0px solid #AAAAAA;
+    padding: 10px 10px;
+}
+
+table.mainTable tbody td {
+    font-size: 17px;
+    font-weight: bold;
+    color: #333333;
+}
+
+table.mainTable tr:nth-child(even) {
+    background: #F5BFB1;
+}
+
+table.mainTable thead {
+    background: #FF3434;
+    background: -moz-linear-gradient(top, #ff6767 0%, #ff4848 66%, #FF3434 100%);
+    background: -webkit-linear-gradient(top, #ff6767 0%, #ff4848 66%, #FF3434 100%);
+    background: linear-gradient(to bottom, #ff6767 0%, #ff4848 66%, #FF3434 100%);
+    border-bottom: 0px solid #444444;
+}
+
+table.mainTable thead th {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    border-left: 0px solid #D0E4F5;
+}
+
+table.mainTable thead th:first-child {
+    border-left: none;
+}
+
+table.mainTable tfoot td {
+    font-size: 14px;
+}
+
+table.mainTable tfoot .links {
+    text-align: right;
+}
+
+table.mainTable tfoot .links a {
+    display: inline-block;
+    background: #1C6EA4;
+    color: #FFFFFF;
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.top-buffer {
+    margin-top: 20px;
+}
+
+.left-buffer {
+    margin-left: 35%;
+}
+
+.mainseach {
+    width: 50%;
+    height: 3em;
+}

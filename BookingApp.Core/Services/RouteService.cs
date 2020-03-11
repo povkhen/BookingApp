@@ -14,18 +14,16 @@ namespace BookingApp.Core.Services
 {
     public class RouteService : IRouteService
     {
-        protected readonly IDALSession _dalSession;
         protected readonly IContext _context;
 
-        public RouteService(IDALSession dalSession, IContext context)
+        public RouteService(IContext context)
         {
-            _dalSession = dalSession;
             _context = context;
         }
 
         public async Task<bool> ExistStationByName(string name)
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -45,7 +43,7 @@ namespace BookingApp.Core.Services
 
         public async Task<bool> ExistRouteByName(string name)
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -67,7 +65,7 @@ namespace BookingApp.Core.Services
 
         public async Task<IEnumerable<string>> GetAllTypesCarName()
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -88,7 +86,7 @@ namespace BookingApp.Core.Services
 
         public async Task<dynamic> GetRouteInfo(string route)
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -109,7 +107,7 @@ namespace BookingApp.Core.Services
 
         public async Task<IEnumerable<TypeCarSeatsDTO>> SearchFreeSeatById(Guid id, string from, string to)
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -117,7 +115,7 @@ namespace BookingApp.Core.Services
                 {
                     var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TypeCarSeats, TypeCarSeatsDTO>()).CreateMapper();
                     var seats = await _context.StoredProcedures.GetFreeGroupingSeats(id, from, to);
-                    var res = mapper.Map<IEnumerable<TypeCarSeats>, IEnumerable<TypeCarSeatsDTO>>(seats);
+                    var res = mapper.Map<IEnumerable<TypeCarSeats>, List<TypeCarSeatsDTO>>(seats);
                     unitOfWork.Commit();
                     return await Task.FromResult(res);                   
 
@@ -132,7 +130,7 @@ namespace BookingApp.Core.Services
 
         public async Task<IEnumerable<TripSearchDTO>> SearchTrip(string departureStatiom, string arrivalStation, DateTime date)
         {
-            using (_dalSession)
+            using (IDALSession _dalSession = new DalSession())
             {
                 UnitOfWork unitOfWork = _dalSession.UnitOfWork;
                 unitOfWork.Begin();
@@ -141,11 +139,34 @@ namespace BookingApp.Core.Services
                     var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TripSearch, TripSearchDTO>()).CreateMapper();
                     var trips = await _context.StoredProcedures.GetSearchTrips(departureStatiom, arrivalStation, date);
                     var res = mapper.Map<IEnumerable<TripSearch>, List<TripSearchDTO>>(trips);
+                    foreach (var trip in res)
+                    {
+                        trip.FreeSeats = await this.SearchFreeSeatById(trip.Id, departureStatiom, arrivalStation);
+                    }
                     unitOfWork.Commit();
                     return await Task.FromResult(res);
-
                 }
                 catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetAllStationsName()
+        {
+            using (IDALSession _dalSession = new DalSession())
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var stations = await _context.StationRepo.GetAllAsync();                    
+                    unitOfWork.Commit();
+                    return await Task.FromResult(stations.ToList().Select(x => x.Name));
+                }
+                catch (KeyNotFoundException)
                 {
                     unitOfWork.Rollback();
                     return null;

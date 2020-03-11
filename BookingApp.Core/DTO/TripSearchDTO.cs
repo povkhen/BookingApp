@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BookingApp.Core.DTO
 {
@@ -12,5 +11,6 @@ namespace BookingApp.Core.DTO
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
         public string Duration { get; set; }
+        public IEnumerable<TypeCarSeatsDTO> FreeSeats { get; set; }
     }
 }

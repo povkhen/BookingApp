@@ -15,7 +15,7 @@ namespace BookingApp.ConsoleUI.Pages
         public Page1(Program program)
            : base("Всі можливі поїзди", program )
         {
-            _service = new RouteService(new DalSession(), new Data.Infrastructure.Context());
+            _service = new RouteService(new Data.Infrastructure.Context());
             Console.InputEncoding = Encoding.Unicode;
    
         }

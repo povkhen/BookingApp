@@ -1,0 +1,99 @@
+﻿@using BookingApp.WEB_MVC.Helpers
+@using BookingApp.WEB_MVC.Models
+@model IndexViewModel<SearchTripViewModel>
+
+@{
+    ViewBag.Title = "Search Page";
+}
+@if (Model.PageInfo.TotalItems == 0)
+{
+    <h3 class="text-primary text-center">Жодних поїздок не знайдено</h3>
+}
+else
+{
+    <table id="searchresults" class="mainTable table">
+        @{var dummy = Model.Models.FirstOrDefault(); }
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Train)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Route)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ArrivalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.FreeSeats)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Models)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Train)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Route)
+                </td>
+                <td>
+                    @item.DepartureTime.ToShortDateString()<br />
+                    @item.ArrivalTime.ToShortDateString()
+                </td>
+                <td>
+                    @item.DepartureTime.ToString("hh:mm tt", new System.Globalization.CultureInfo("en-UA"))<br />
+                    @item.ArrivalTime.ToString("hh:mm tt", new System.Globalization.CultureInfo("en-UA"))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    <div class="btn-group-vertical">
+                        @{
+                            foreach (var type in item.FreeSeats)
+                            {
+                                @Html.ActionLink(type.Car + " : " + type.Count,
+                                                 "Booking",
+                                                 "Home",
+                                                 new { id = item.Id, type = type.Car },
+                                                 new { @class = "btn btn-primary btn-xs" })
+
+                            }
+                        }
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </table>
+    <br />
+    @*<div class="btn-group">
+            @{ for (int i = 1; i <= Model.PageInfo.TotalPages; i++)
+                {
+                    var classes = "btn btn-default ";
+                    if (i == Model.PageInfo.PageNumber)
+                    {
+                        classes += "selected btn-primare";
+                    }
+                    @Ajax.ActionLink(i.ToString(),
+                                    "Search",
+                                    new { from = ViewBag.From, to = ViewBag.To, date = ViewBag.Date, page = i },
+                                    new AjaxOptions { UpdateTargetId = "results" },
+                                    new { @class = classes });
+                }
+             }
+        </div>*@
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Search", new { from = ViewBag.From, to = ViewBag.To, date = ViewBag.Date, page = x }))
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+}

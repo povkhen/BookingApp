@@ -13,7 +13,6 @@ namespace BookingApp.Data.Entities
             Stations = new HashSet<Station>();
         }
 
-        public Guid Id { get; set; }
 
         [Required]
         [StringLength(100)]
