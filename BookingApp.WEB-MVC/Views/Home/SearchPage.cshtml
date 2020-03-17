@@ -3,12 +3,16 @@
     ViewBag.Title = "SearchPage";
 }
 @Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/datepicker")
+
 @Styles.Render("~/Content/cssjqueryUi")
-@using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "results" }))
+@Styles.Render("~/Content/datepicker")
+
+@using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "results", HttpMethod="Post"}))
 {
     if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Any()))
     {
-        <br/>
+        <br />
         <div class="alert alert-danger">
             <a class="close" data-dismiss="alert">×</a>
             <h5 class="alert-heading">Не правильний ввід</h5>
@@ -27,13 +31,9 @@
             </div>
             <div class="col-md-4">
                 <h2>Сhoose date</h2>
-                <div class='input-group date' id='datetimepicker1'>
-                    <div class='input-group date' id='datetimepicker1'>
-                        @Html.TextBoxFor(x => x.Date, new { @class = "form-control" })
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+                <div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
+                    @Html.TextBoxFor(x => x.Date, new { @class = "form-control", @readonly = true })
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </div>
         </div>
@@ -46,9 +46,10 @@
     <div id="results"></div>
     <script>
         $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'DD-MM-YYYY LT'
-            });
+            $("#datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker('update', new Date());
         });
         $(function () {
             $("[dataAutocompleteSource]").each(function () {
@@ -57,7 +58,7 @@
                     source: target.attr("dataAutocompleteSource"),
                     autoFocus: true,
                     change: function (event, ui) {
-                        if (ui.item == null){ 
+                        if (ui.item == null) {
                             $(this).val((ui.item ? ui.item.id : ""));
                         }
                     }

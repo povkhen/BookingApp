@@ -62,7 +62,6 @@ namespace BookingApp.WEB_MVC.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
         public async Task<ActionResult> SearchPage()
         {
             return View();
@@ -77,8 +76,8 @@ namespace BookingApp.WEB_MVC.Controllers
                 IEnumerable<TripSearchDTO> tripsDTOs = await _service.SearchTrip(bind.From, bind.To, bind.Date);
       
                 var trips = _mapperTrip.Map<IEnumerable<TripSearchDTO>, List<SearchTripViewModel>>(tripsDTOs);
-                TripViewModel<SearchTripViewModel> ivm = new TripViewModel<SearchTripViewModel>{ Models = trips };
-                return PartialView(ivm);
+                TripViewModel<SearchTripViewModel> res = new TripViewModel<SearchTripViewModel>{ Models = trips };
+                return PartialView(res);
             }
             else
             {

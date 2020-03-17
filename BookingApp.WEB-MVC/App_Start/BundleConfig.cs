@@ -10,7 +10,7 @@ namespace BookingApp.WEB_MVC
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.min.js"
+                        "~/Scripts/jquery.unobtrusive-ajax.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -22,18 +22,26 @@ namespace BookingApp.WEB_MVC
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/bootstrap.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
+                      "~/Scripts/bootstrap-datepicker.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-journal.css",
+                      "~/Content/bootstrap.css",
                       "~/Content/Site.css",
                       "~/Content/styles.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                       "~/Scripts/jquery-ui.js"));
-            
+
             bundles.Add(new StyleBundle("~/Content/cssjqueryUi").Include(
                    "~/Content/jquery-ui.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datepicker").Include(
+                   "~/Content/datepicker.css"));
         }
     }
 }

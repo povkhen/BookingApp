@@ -5,6 +5,8 @@
 @{
     ViewBag.Title = "Search Page";
 }
+
+@Scripts.Render("~/bundles/jquery")
 @if (!Model.Models.Any())
 {
     <h3 class="text-primary text-center">Жодних поїздок не знайдено</h3>
@@ -61,17 +63,17 @@ else
                         @{
                             foreach (var type in item.FreeSeats)
                             {
-                                using (Ajax.BeginForm("Booking", new AjaxOptions { HttpMethod="Post" }))
+                                using (Ajax.BeginForm("Booking", new AjaxOptions { HttpMethod = "Post" }))
                                 {
-                                    <input type="hidden" name="Id" value=@item. />
-                                    <input type="hidden" name="Train" value=@item.Train />
-                                    <input type="hidden" name="Route" value=@item.Route />
-                                    <input type="hidden" name="DepartureTime" value=@item.DepartureTime />
-                                    <input type="hidden" name="ArrivalTime" value=@item.ArrivalTime />
-                                    <input type="hidden" name="Duration" value=@item.Duration />
-                                    <input type="hidden" name="Car" value=@type.Car />
-                                    <input type="hidden" name="Count" value=@type.Count />
-                                    <input class="btn btn-primary btn-xsh carseatwith" type="submit" value="@String.Format("{0} : {1}",type.Car, type.Count)"/>
+                                    <input type="hidden" name="Id" value="@item"/>
+                                    <input type="hidden" name="Train" value="@item.Train" />
+                                    <input type="hidden" name="Route" value="@item.Route" />
+                                    <input type="hidden" name="DepartureTime" value="@item.DepartureTime" />
+                                    <input type="hidden" name="ArrivalTime" value="@item.ArrivalTime" />
+                                    <input type="hidden" name="Duration" value="@item.Duration" />
+                                    <input type="hidden" name="Car" value="@type.Car" />
+                                    <input type="hidden" name="Count" value="@type.Count" />
+                                    <input class="btn btn-primary btn-xsh carseatwith" type="submit" value="@String.Format("{0} : {1}",type.Car, type.Count)" />
                                 }
 
                             }
@@ -82,5 +84,4 @@ else
         }
     </table>
     <br />
-    @Scripts.Render("~/bundles/jquery")
 }
