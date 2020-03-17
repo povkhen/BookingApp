@@ -9,16 +9,23 @@ using BookingApp.Data.Entities.Procedure_Models;
 using BookingApp.Data.Infrastructure;
 using BookingApp.Core.Interfaces;
 using BookingApp.Core.DTO;
+using BookingApp.Data.Entities;
 
 namespace BookingApp.Core.Services
 {
     public class RouteService : IRouteService
     {
         protected readonly IContext _context;
-
+        protected readonly IMapper _mapper;
         public RouteService(IContext context)
         {
             _context = context;
+            _mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TypeCarSeats, TypeCarSeatsDTO>();
+                cfg.CreateMap<TripSearch, TripSearchDTO>();
+                cfg.CreateMap<Station, StationDTO>();
+            }).CreateMapper();
         }
 
         public async Task<bool> ExistStationByName(string name)
@@ -113,9 +120,8 @@ namespace BookingApp.Core.Services
                 unitOfWork.Begin();
                 try
                 {
-                    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TypeCarSeats, TypeCarSeatsDTO>()).CreateMapper();
                     var seats = await _context.StoredProcedures.GetFreeGroupingSeats(id, from, to);
-                    var res = mapper.Map<IEnumerable<TypeCarSeats>, List<TypeCarSeatsDTO>>(seats);
+                    var res = _mapper.Map<IEnumerable<TypeCarSeats>, List<TypeCarSeatsDTO>>(seats);
                     unitOfWork.Commit();
                     return await Task.FromResult(res);                   
 
@@ -136,9 +142,8 @@ namespace BookingApp.Core.Services
                 unitOfWork.Begin();
                 try
                 {
-                    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TripSearch, TripSearchDTO>()).CreateMapper();
                     var trips = await _context.StoredProcedures.GetSearchTrips(departureStatiom, arrivalStation, date);
-                    var res = mapper.Map<IEnumerable<TripSearch>, List<TripSearchDTO>>(trips);
+                    var res = _mapper.Map<IEnumerable<TripSearch>, List<TripSearchDTO>>(trips);
                     foreach (var trip in res)
                     {
                         trip.FreeSeats = await this.SearchFreeSeatById(trip.Id, departureStatiom, arrivalStation);
@@ -154,7 +159,7 @@ namespace BookingApp.Core.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetAllStationsName()
+        public async Task<IEnumerable<StationDTO>> GetAllStations()
         {
             using (IDALSession _dalSession = new DalSession())
             {
@@ -162,9 +167,11 @@ namespace BookingApp.Core.Services
                 unitOfWork.Begin();
                 try
                 {
-                    var stations = await _context.StationRepo.GetAllAsync();                    
+                    var stations = await _context.StationRepo.GetAllAsync();
+                    var res = _mapper.Map<IEnumerable<Station>, List<StationDTO>>(stations);
                     unitOfWork.Commit();
-                    return await Task.FromResult(stations.ToList().Select(x => x.Name));
+                    return await Task.FromResult(res);
+
                 }
                 catch (KeyNotFoundException)
                 {

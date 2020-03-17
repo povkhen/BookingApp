@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookingApp.Data.Entities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("route.Station")]
     public partial class Station : BaseEntity
     {
@@ -18,8 +18,6 @@ namespace BookingApp.Data.Entities
 
         public Guid AdressId { get; set; }
 
-        [Required]
-        [StringLength(100)]
         public string Name { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }

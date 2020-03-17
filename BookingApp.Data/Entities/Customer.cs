@@ -15,15 +15,10 @@ namespace BookingApp.Data.Entities
 
         public Guid? TypeCustomerId { get; set; }
 
-        [Required]
-        [StringLength(100)]
         public string FirstName { get; set; }
 
-        [Required]
-        [StringLength(100)]
         public string LastName { get; set; }
 
-        [StringLength(100)]
         public string Email { get; set; }
 
         public DateTime? BirthDay { get; set; }

@@ -17,8 +17,6 @@ namespace BookingApp.Data.Entities
 
         public Guid RouteId { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string Name { get; set; }
 
         public double AvarageSpeed { get; set; }

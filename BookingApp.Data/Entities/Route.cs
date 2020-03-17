@@ -15,7 +15,6 @@ namespace BookingApp.Data.Entities
         }
 
 
-        [StringLength(100)]
         public string Name { get; set; }
 
         public virtual ICollection<RailwayToRoute> RailwayToRoutes { get; set; }

@@ -13,28 +13,11 @@ namespace BookingApp.Data.Entities
             Stations = new HashSet<Station>();
         }
 
-
-        [Required]
-        [StringLength(100)]
         public string Town { get; set; }
-
-        [Required]
-        [StringLength(100)]
         public string Region { get; set; }
-
-        [Required]
-        [StringLength(100)]
         public string Street { get; set; }
-
-        [Required]
-        [StringLength(5)]
         public string Apartment { get; set; }
-
-        [Required]
-        [StringLength(100)]
         public string Country { get; set; }
-
-        [StringLength(5)]
         public string PostalCode { get; set; }
 
         public virtual ICollection<Station> Stations { get; set; }

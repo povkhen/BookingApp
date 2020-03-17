@@ -1,11 +1,11 @@
 ﻿@using BookingApp.WEB_MVC.Helpers
 @using BookingApp.WEB_MVC.Models
-@model IndexViewModel<SearchTripViewModel>
+@model TripViewModel<SearchTripViewModel>
 
 @{
     ViewBag.Title = "Search Page";
 }
-@if (Model.PageInfo.TotalItems == 0)
+@if (!Model.Models.Any())
 {
     <h3 class="text-primary text-center">Жодних поїздок не знайдено</h3>
 }
@@ -21,10 +21,10 @@ else
                 @Html.DisplayNameFor(model => dummy.Route)
             </th>
             <th>
-                @Html.DisplayNameFor(model => dummy.DepartureTime)
+                @Html.DisplayWithBreaksFor(model => dummy.DepartureTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => dummy.ArrivalTime)
+                @Html.DisplayWithBreaksFor(model => dummy.ArrivalTime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => dummy.Duration)
@@ -61,39 +61,26 @@ else
                         @{
                             foreach (var type in item.FreeSeats)
                             {
-                                @Html.ActionLink(type.Car + " : " + type.Count,
-                                                 "Booking",
-                                                 "Home",
-                                                 new { id = item.Id, type = type.Car },
-                                                 new { @class = "btn btn-primary btn-xs" })
+                                using (Ajax.BeginForm("Booking", new AjaxOptions { HttpMethod="Post" }))
+                                {
+                                    <input type="hidden" name="Id" value=@item. />
+                                    <input type="hidden" name="Train" value=@item.Train />
+                                    <input type="hidden" name="Route" value=@item.Route />
+                                    <input type="hidden" name="DepartureTime" value=@item.DepartureTime />
+                                    <input type="hidden" name="ArrivalTime" value=@item.ArrivalTime />
+                                    <input type="hidden" name="Duration" value=@item.Duration />
+                                    <input type="hidden" name="Car" value=@type.Car />
+                                    <input type="hidden" name="Count" value=@type.Count />
+                                    <input class="btn btn-primary btn-xsh carseatwith" type="submit" value="@String.Format("{0} : {1}",type.Car, type.Count)"/>
+                                }
 
                             }
                         }
                     </div>
                 </td>
-
             </tr>
         }
     </table>
     <br />
-    @*<div class="btn-group">
-            @{ for (int i = 1; i <= Model.PageInfo.TotalPages; i++)
-                {
-                    var classes = "btn btn-default ";
-                    if (i == Model.PageInfo.PageNumber)
-                    {
-                        classes += "selected btn-primare";
-                    }
-                    @Ajax.ActionLink(i.ToString(),
-                                    "Search",
-                                    new { from = ViewBag.From, to = ViewBag.To, date = ViewBag.Date, page = i },
-                                    new AjaxOptions { UpdateTargetId = "results" },
-                                    new { @class = classes });
-                }
-             }
-        </div>*@
-    <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action("Search", new { from = ViewBag.From, to = ViewBag.To, date = ViewBag.Date, page = x }))
-    </div>
     @Scripts.Render("~/bundles/jquery")
 }

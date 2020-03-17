@@ -10,8 +10,8 @@ namespace BookingApp.WEB_MVC
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
-                        "~/Scripts/jquery-ui-1.12.1.min.js"));
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -28,6 +28,12 @@ namespace BookingApp.WEB_MVC
                       "~/Content/bootstrap-journal.css",
                       "~/Content/Site.css",
                       "~/Content/styles.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                      "~/Scripts/jquery-ui.js"));
+            
+            bundles.Add(new StyleBundle("~/Content/cssjqueryUi").Include(
+                   "~/Content/jquery-ui.css"));
         }
     }
 }

@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace BookingApp.WEB_MVC.Models.Binding
 {
     public class MainSearchBind
     {
-        [Required]
+        [Required (ErrorMessage = "Будь-ласка, введіть станцію відправлення")]
         public string From { get; set; }
-        [Required]
+
+        [Required (ErrorMessage = "Будь-ласка, введіть станцію прибуття")]
         public string To { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Будь-ласка, введіть дату відправлення")]
         public DateTime Date { get; set; }
     }
 }

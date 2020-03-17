@@ -8,7 +8,7 @@ namespace BookingApp.WEB_MVC.Models
     public class SearchTripViewModel
     {
 
-        [HiddenInput(DisplayValue = false)]
+        [Display(Name = "Id")]
         public Guid Id { get; set; }
 
         [Display(Name = "Train")]
@@ -17,10 +17,10 @@ namespace BookingApp.WEB_MVC.Models
         [Display(Name = "Route")]
         public string Route { get; set; }
 
-        [Display(Name = "Departure Date\nArrival Date")]
+        [Display(Name = "Departure Date/\nArrival Date")]
         public DateTime DepartureTime { get; set; }
         
-        [Display(Name = "Departure time\nArrival time")]
+        [Display(Name = "Departure time/\nArrival time")]
         public DateTime ArrivalTime { get; set; }
 
         [Display(Name = "Duration")]

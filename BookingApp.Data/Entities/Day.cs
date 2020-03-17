@@ -12,12 +12,8 @@ namespace BookingApp.Data.Entities
             RecurrenceDays = new HashSet<RecurrenceDay>();
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Number { get; set; }
 
-        [Required]
-        [StringLength(15)]
         public string DayName { get; set; }
 
         public virtual ICollection<RecurrenceDay> RecurrenceDays { get; set; }

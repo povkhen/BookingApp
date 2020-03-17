@@ -13,8 +13,6 @@ namespace BookingApp.Data.Entities
             Cars = new HashSet<Car>();
         }
 
-        [Required]
-        [StringLength(15)]
         public string Name { get; set; }
 
         public virtual ICollection<Car> Cars { get; set; }

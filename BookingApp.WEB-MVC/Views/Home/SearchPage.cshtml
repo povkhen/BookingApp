@@ -1,34 +1,68 @@
-﻿
+﻿@model BookingApp.WEB_MVC.Models.Binding.MainSearchBind
 @{
     ViewBag.Title = "SearchPage";
 }
-
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqueryUi")
 @using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "results" }))
 {
+    if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Any()))
+    {
+        <br/>
+        <div class="alert alert-danger">
+            <a class="close" data-dismiss="alert">×</a>
+            <h5 class="alert-heading">Не правильний ввід</h5>
+            @Html.ValidationSummary(false)
+        </div>
+    }
     <div class="jumbotron">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>Input departure station</h2>
-                    <input class ="form-control" type="text" name="from" />
-                </div>
-                <div class="col-md-4">
-                    <h2>Input arrival station</h2>
-                    <input class ="form-control" type="text" name="to" />
-                </div>
-                <div class="col-md-4">
-                    <h2>Сhoose date</h2>
-                    <input class ="form-control" type="date" name="date">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Input departure station</h2>
+                @Html.TextBoxFor(x => x.From, new { @class = "form-control", dataAutocompleteSource = @Url.Action("AutocompleteSearch", "Home") })
+            </div>
+            <div class="col-md-4">
+                <h2>Input arrival station</h2>
+                @Html.TextBoxFor(x => x.To, new { @class = "form-control", dataAutocompleteSource = @Url.Action("AutocompleteSearch", "Home") })
+            </div>
+            <div class="col-md-4">
+                <h2>Сhoose date</h2>
+                <div class='input-group date' id='datetimepicker1'>
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.TextBoxFor(x => x.Date, new { @class = "form-control" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="row top-buffer">
-                <div class="left-buffer">
-                    <input class="btn btn-success text-center mainseach" type="submit" value="Search">
-                </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="left-buffer">
+                <input class="btn btn-success text-center mainseach" type="submit" value="Search">
             </div>
+        </div>
     </div>
     <div id="results"></div>
-
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'DD-MM-YYYY LT'
+            });
+        });
+        $(function () {
+            $("[dataAutocompleteSource]").each(function () {
+                var target = $(this);
+                target.autocomplete({
+                    source: target.attr("dataAutocompleteSource"),
+                    autoFocus: true,
+                    change: function (event, ui) {
+                        if (ui.item == null){ 
+                            $(this).val((ui.item ? ui.item.id : ""));
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }
-
-@Scripts.Render("~/scripts/jquery-3.4.1.min.js")
-@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
