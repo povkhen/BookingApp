@@ -1,10 +1,9 @@
 ﻿@using BookingApp.WEB_MVC.Models
-@model TripViewModel<SearchTripViewModel>
+@model AllSeatsViewModel<AllSeatsProcedureViewModel>
 
 @{
     ViewBag.Title = "Booking";
 }
 <br/>
-@Html.Partial("Search", Model)
-<h2>Free Seats</h2>
+@Html.Partial("Search", Model.Trip)
 

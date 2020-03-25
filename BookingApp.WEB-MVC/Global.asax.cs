@@ -1,5 +1,4 @@
 ﻿using BookingApp.Core.Infrastructure;
-using BookingApp.WEB_MVC;
 using BookingApp.WEB_MVC.Utils;
 using Ninject;
 using Ninject.Modules;

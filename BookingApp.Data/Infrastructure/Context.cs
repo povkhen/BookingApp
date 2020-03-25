@@ -25,6 +25,8 @@ namespace BookingApp.Data.Infrastructure
         private readonly IRepository<TypeCar> _typeCarRepo;
         private readonly IRepository<TypeCustomer> _typeCustomerRepo;
         private readonly IRepository<TypeSeat> _typeSeatRepo;
+        private readonly IRepository<Cart> _cartRepo;
+        private readonly IRepository<CartItem> _cartItemRepo;
 
         private IRepository<T> CreateRepo<T>(IRepository<T> _repo, string name) where T: BaseEntity
         {
@@ -128,6 +130,14 @@ namespace BookingApp.Data.Infrastructure
         public IRepository<TypeSeat> TypeSeatRepo
         {
             get => CreateRepo<TypeSeat>(_typeSeatRepo, "train.TypeSeat");
+        }
+        public IRepository<Cart> CartRepo
+        {
+            get => CreateRepo<Cart>(_cartRepo, "customer.Cart");
+        }
+        public IRepository<CartItem> CartItemRepo
+        {
+            get => CreateRepo<CartItem>(_cartItemRepo, "customer.CartItem");
         }
     }
 }

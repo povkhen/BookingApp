@@ -151,8 +151,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PagingHelpers.cs" />
+    <Compile Include="Models\AllSeatsProcedureViewModel.cs" />
     <Compile Include="Models\Binding\MainSearchBind.cs" />
-    <Compile Include="Models\TripViewModel.cs" />
+    <Compile Include="Models\CombineViewModels\AllSeatsViewModel.cs" />
+    <Compile Include="Models\CombineViewModels\TripViewModel.cs" />
     <Compile Include="Models\SearchTripViewModel.cs" />
     <Compile Include="Models\SeatSearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -195,7 +197,11 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-3.5.1.debug.js" />
+    <Content Include="Scripts\knockout-3.5.1.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -225,6 +231,7 @@
       <Name>BookingApp.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

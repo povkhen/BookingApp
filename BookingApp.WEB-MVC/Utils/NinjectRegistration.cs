@@ -9,6 +9,7 @@ namespace BookingApp.WEB_MVC.Utils
         public override void Load()
         {
             Bind<IRouteService>().To<RouteService>();         
+            Bind<ICostService>().To<CostService>();
         }
     }
 }

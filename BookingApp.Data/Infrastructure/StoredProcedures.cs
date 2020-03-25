@@ -33,6 +33,19 @@ namespace BookingApp.Data.Infrastructure
             }
         }
 
+        public async Task<IEnumerable<AllrSeatsProcedure>> GetAllSeats(Guid tripId, string from, string to, string typecar)
+        {
+            using (var connection = DBConnection.CreateConnection())
+            {
+                // TODO: Rename stored procedures on (GET_ALL_SEATS_BY_TYPECAR)
+                var procedure = "[schedule].[GET_ALL_SEATS]";
+                var values = new { From = from, To = to, TripId = tripId, TypeCar = typecar };
+                var result = await connection.QueryAsync<AllrSeatsProcedure>(procedure, values, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+
         public async Task<IEnumerable<dynamic>> GetRouteInfo(string route)
         {
             using (var connection = DBConnection.CreateConnection())

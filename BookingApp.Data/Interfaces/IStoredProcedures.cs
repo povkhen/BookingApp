@@ -9,6 +9,7 @@ namespace BookingApp.Data.Interfaces
     {
         Task<IEnumerable<TripSearch>> GetSearchTrips(string departureStation, string arrivalStation, DateTime date);
         Task<IEnumerable<TypeCarSeats>> GetFreeGroupingSeats(Guid tripId, string from, string to);
+        Task<IEnumerable<AllrSeatsProcedure>> GetAllSeats(Guid tripId, string from, string to, string typecar);
         Task<IEnumerable<dynamic>> GetRouteInfo(string route);
     }
 }

@@ -1,12 +1,11 @@
 ﻿@model BookingApp.WEB_MVC.Models.Binding.MainSearchBind
+
 @{
     ViewBag.Title = "SearchPage";
 }
-@Scripts.Render("~/bundles/jqueryui")
-@Scripts.Render("~/bundles/datepicker")
 
-@Styles.Render("~/Content/cssjqueryUi")
-@Styles.Render("~/Content/datepicker")
+@Scripts.Render("~/bundles/scipts")
+@Scripts.Render("~/bundles/datepicker")
 
 @using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "results", HttpMethod="Post"}))
 {
@@ -37,16 +36,36 @@
                 </div>
             </div>
         </div>
-        <div class="row top-buffer">
-            <div class="left-buffer">
-                <input class="btn btn-success text-center mainseach" type="submit" value="Search">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Departure time from</h2>
+                @{
+                    List<string> time24hr = new List<string>();
+                    DateTime myDate = DateTime.ParseExact("2000-05-08 00:00", "yyyy-MM-dd HH:mm",new System.Globalization.CultureInfo("en-UA"));
+                    for (int i = 0; i < 24; i++)
+                    {
+                        string strtime = myDate.AddHours(i).ToString("hh:mm tt");
+                        time24hr.Add(strtime);
+                    }
+                }        
+                @Html.DropDownListFor( Model => Model.StartTime, new SelectList(time24hr), new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="left-buffer">
+            <div class="mainseachDiv">
+                <input class="btn btn-primary text-center mainseach" type="submit" value="Search">
             </div>
         </div>
     </div>
     <div id="results"></div>
     <script>
         $(function () {
+            var date = new Date();
+            date.setDate(date.getDate());
             $("#datepicker").datepicker({
+                startDate: date, 
                 autoclose: true,
                 todayHighlight: true
             }).datepicker('update', new Date());

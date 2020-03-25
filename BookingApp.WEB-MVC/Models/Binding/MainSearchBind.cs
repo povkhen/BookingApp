@@ -13,5 +13,6 @@ namespace BookingApp.WEB_MVC.Models.Binding
 
         [Required(ErrorMessage = "Будь-ласка, введіть дату відправлення")]
         public DateTime Date { get; set; }
+        public string StartTime { get; set; } = "00";
     }
 }

@@ -4,16 +4,15 @@ namespace BookingApp.Core.BusinessModels
 {
     class Discount
     {
-        private decimal _value = 0;
-        public Discount(decimal val)
+        public Discount(double val)
         {
-            _value = val;
+            Value = val;
         }
-        public decimal Value { get { return _value; } }
-        public decimal GetDiscountedPrice(decimal sum)
+        public double Value { get; } = 0;
+        public double GetDiscountedPrice(double sum)
         {
             if (DateTime.Now.Day == 1)
-                return sum - sum * _value;
+                return sum - sum * Value;
             return sum;
         }
     }

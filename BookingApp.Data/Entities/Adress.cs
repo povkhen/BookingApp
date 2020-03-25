@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingApp.Data.Entities
@@ -22,4 +21,5 @@ namespace BookingApp.Data.Entities
 
         public virtual ICollection<Station> Stations { get; set; }
     }
+
 }

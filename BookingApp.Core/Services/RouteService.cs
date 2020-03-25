@@ -24,6 +24,7 @@ namespace BookingApp.Core.Services
             {
                 cfg.CreateMap<TypeCarSeats, TypeCarSeatsDTO>();
                 cfg.CreateMap<TripSearch, TripSearchDTO>();
+                cfg.CreateMap<AllrSeatsProcedure, AllrSeatsProcedureDTO>();
                 cfg.CreateMap<Station, StationDTO>();
             }).CreateMapper();
         }
@@ -124,6 +125,28 @@ namespace BookingApp.Core.Services
                     var res = _mapper.Map<IEnumerable<TypeCarSeats>, List<TypeCarSeatsDTO>>(seats);
                     unitOfWork.Commit();
                     return await Task.FromResult(res);                   
+
+                }
+                catch
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<AllrSeatsProcedureDTO>> SearchAllSeatById(Guid id, string from, string to, string typecar)
+        {
+            using (IDALSession _dalSession = new DalSession())
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var allseats = await _context.StoredProcedures.GetAllSeats(id, from, to, typecar);
+                    var res = _mapper.Map<IEnumerable<AllrSeatsProcedure>, List<AllrSeatsProcedureDTO>>(allseats);
+                    unitOfWork.Commit();
+                    return await Task.FromResult(res);
 
                 }
                 catch

@@ -2,8 +2,9 @@
     ViewBag.Title = "Home Page";
 }
 
-    <div class="jumbotron">
-        <h1>Booking train ticket</h1>
-        <p>Find your perfect trip.</p>
-        <p>@Html.ActionLink("Search", "SearchPage", "Home", new { @class = "btn btn-primary btn-lg" })</p>
-    </div>
+<div class="jumbotron">
+    <h1>Booking train ticket</h1>
+    <p>Find your perfect trip.</p>
+    <p>@Html.ActionLink("Search", "SearchPage", new { controller = "Home" }, new { @class = "btn btn-primary btn-lg" })</p>
+    @*<div data-bind="text: welcomeMessage, event: { mouseover: onmousein, mouseout: onmouseout }"></div>*@
+</div>

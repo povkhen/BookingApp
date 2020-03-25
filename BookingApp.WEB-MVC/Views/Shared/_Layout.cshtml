@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @*   <link href="~/Content/styles.css" rel="stylesheet" type="text/css" />*@
     <title>@ViewBag.Title - Онлайн резервування</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/scipts")
+    @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -37,7 +36,6 @@
             <p>&copy; @DateTime.Now.Year - Booking</p>
         </footer>
     </div>
-
     @RenderSection("scripts", required: false)
 </body>
 </html>

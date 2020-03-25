@@ -1,4 +1,4 @@
-﻿table.mainTable {
+table.mainTable {
     font-family: "Arial Black", Gadget, sans-serif;
     border: 0px solid #FF8D83;
     background-color: #EEEEEE;
@@ -63,14 +63,34 @@ table.mainTable tfoot .links a {
 }
 
 .left-buffer {
-    margin-left: 35%;
+    margin-left: 40%;
 }
 
 .mainseach {
-    width: 50%;
-    height: 3em;
+    width: 100%;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #f9fbfd;
+    line-height: 5.6rem;
+    height: 6rem;
+    padding: 0 6rem;
+    background: linear-gradient(180deg,#e93e3e 0,#e99f9f 100%);
+    border: 2px solid #d99d9d;
+    border-radius: 4.2rem;
+    cursor: pointer;
+    outline: none !important;
+}
+
+.mainseachDiv {
+    display: inline-block;
+    border-radius: 4.2rem;
+    background-color: #dbe4ea;
+    padding: 1rem 1.5rem;
 }
 
 .carseatwith {
     width: 100%;
+    margin-bottom: 10px;
+    outline: none !important;
+    border-radius: 10px !important;
 }

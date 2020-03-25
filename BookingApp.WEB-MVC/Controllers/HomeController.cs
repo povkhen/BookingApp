@@ -1,27 +1,31 @@
-﻿using BookingApp.Core.DTO;
+﻿using AutoMapper;
+using BookingApp.Core.DTO;
 using BookingApp.Core.Interfaces;
 using BookingApp.WEB_MVC.Models;
-
-using AutoMapper;
+using BookingApp.WEB_MVC.Models.Binding;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using BookingApp.WEB_MVC.Models.Binding;
-using System.Linq;
 
 namespace BookingApp.WEB_MVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IMapper _mapperTrip;
-        private readonly IRouteService _service;
-        public HomeController(IRouteService service)
+        private readonly IRouteService _routeService;
+        private readonly ICostService _costService;
+        public HomeController(IRouteService routeService, ICostService costService)
         {
-            _service = service;
+            _routeService = routeService;
+            _costService = costService;
             _mapperTrip = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TripSearchDTO, SearchTripViewModel>();
                 cfg.CreateMap<TypeCarSeatsDTO, SeatSearchViewModel>();
+                cfg.CreateMap<AllrSeatsProcedureDTO, AllSeatsProcedureViewModel>();
             }).CreateMapper();
 
         }
@@ -40,7 +44,7 @@ namespace BookingApp.WEB_MVC.Controllers
 
         public async Task<ActionResult> AutocompleteSearch(string term)
         {
-            var stations = await _service.GetAllStations();
+            var stations = await _routeService.GetAllStations();
             var models = stations.Where(a => a.Name.Contains(term))
             .Select(a => new { value = a.Name })
             .Distinct();
@@ -48,17 +52,28 @@ namespace BookingApp.WEB_MVC.Controllers
             return Json(models, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Booking(SearchTripViewModel item, SeatSearchViewModel item2)
+        public TripViewModel<SearchTripViewModel> GetTripViewModel(SearchTripViewModel item, SeatSearchViewModel item2, MainSearchBind bind)
         {
             List<SearchTripViewModel> trips = new List<SearchTripViewModel>();
             List<SeatSearchViewModel> car = new List<SeatSearchViewModel>();
-            
             car.Add(item2);
             item.FreeSeats = car;
             trips.Add(item);
-            
-            TripViewModel<SearchTripViewModel> viewModel = new TripViewModel<SearchTripViewModel> { Models = trips };
+            return new TripViewModel<SearchTripViewModel> { Models = trips, Bind = bind };
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Booking(SearchTripViewModel item, SeatSearchViewModel item2, MainSearchBind bind)
+        {
+            IEnumerable<AllrSeatsProcedureDTO> allrSeatsDto = await _routeService.SearchAllSeatById(item.Id, bind.From, bind.To, item2.Car);
+            var allseats = _mapperTrip.Map<IEnumerable<AllrSeatsProcedureDTO>, List<AllSeatsProcedureViewModel>>(allrSeatsDto);
+            AllSeatsViewModel<AllSeatsProcedureViewModel> viewModel =
+                    new AllSeatsViewModel<AllSeatsProcedureViewModel>
+                    {
+                        Trip = GetTripViewModel(item, item2, bind),
+                        AllSeats = allseats
+                    };
+
             return View(viewModel);
         }
 
@@ -73,15 +88,16 @@ namespace BookingApp.WEB_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                IEnumerable<TripSearchDTO> tripsDTOs = await _service.SearchTrip(bind.From, bind.To, bind.Date);
-      
-                var trips = _mapperTrip.Map<IEnumerable<TripSearchDTO>, List<SearchTripViewModel>>(tripsDTOs);
-                TripViewModel<SearchTripViewModel> res = new TripViewModel<SearchTripViewModel>{ Models = trips };
+                DateTime time = DateTime.ParseExact(bind.StartTime, "hh:mm tt", CultureInfo.InvariantCulture);
+                IEnumerable<TripSearchDTO> tripsDTOs = await _routeService.SearchTrip(bind.From, bind.To, bind.Date);
+                var trips = _mapperTrip.Map<IEnumerable<TripSearchDTO>, List<SearchTripViewModel>>(tripsDTOs)
+                    .Where(x => x.DepartureTime.TimeOfDay >= time.TimeOfDay);
+                TripViewModel<SearchTripViewModel> res = new TripViewModel<SearchTripViewModel> { Models = trips, Bind = bind };
                 return PartialView(res);
             }
             else
             {
-                return View("SearchPage");
+                return null;
             }
         }
 
