@@ -8,7 +8,7 @@
 
 @Scripts.Render("~/bundles/scipts")
 
-<br/>
+<br />
 @if (!Model.Models.Any())
 {
     <h3 class="text-primary text-center">Жодних поїздок не знайдено</h3>
@@ -67,7 +67,7 @@ else
                             {
                                 using (Ajax.BeginForm("Booking", new AjaxOptions { HttpMethod = "Post" }))
                                 {
-                                    <input type="hidden" name="Id" value="@item.Id"/>
+                                    <input type="hidden" name="Id" value="@item.Id" />
                                     <input type="hidden" name="Train" value="@item.Train" />
                                     <input type="hidden" name="Route" value="@item.Route" />
                                     <input type="hidden" name="DepartureTime" value="@item.DepartureTime" />
@@ -78,7 +78,7 @@ else
                                     <input type="hidden" name="From" value="@Model.Bind.From" />
                                     <input type="hidden" name="To" value="@Model.Bind.To" />
                                     <input type="hidden" name="Date" value="@Model.Bind.Date" />
-                                    <input class="btn btn-primary btn-xsh carseatwith" type="submit" 
+                                    <input class="btn btn-primary btn-xsh carseatwith" type="submit"
                                            value="@String.Format("{0} : {1}",type.Car, type.Count)" />
                                 }
 

@@ -4,6 +4,7 @@ namespace BookingApp.Core.Interfaces
 {
     public interface ICostService
     {
-        Task<double> GetCostOfSeatAsync(double priceCoeff, double duration);
+        Task<string> GetCostOfSeatAsync(double priceCoeff, string duration, int day);
+        Task<string> GetSaleCostOfSeatAsync(double priceCoeff, string duration, int day);
     }
 }

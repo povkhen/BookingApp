@@ -1,9 +1,45 @@
 ﻿@using BookingApp.WEB_MVC.Models
+@using BookingApp.WEB_MVC.Utils
 @model AllSeatsViewModel<AllSeatsProcedureViewModel>
-
+@Styles.Render("~/Content/car")
 @{
     ViewBag.Title = "Booking";
 }
-<br/>
+<br />
 @Html.Partial("Search", Model.Trip)
 
+<ul class="nav nav-pills" id="cars">
+    
+@foreach (var seats in Model.Cars)
+{
+    var carNum = seats.FirstOrDefault().CarNumber.ToString();
+    string jsonString = seats.ToJSON();
+    <li class="aCar">
+        <a onclick="load('@jsonString');">@carNum</a>
+    </li>
+}
+</ul>
+
+<div id="car">
+    @Html.Partial("Car", Model.Cars.FirstOrDefault())
+</div>
+
+
+<script>
+    $(function () {
+        $('#cars li:first-child').addClass('active');
+        });
+    function load(model) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Car", "Home")',
+            data: model,
+            contentType: "application/json",
+            success: function (result) {
+                $('#car').html(result)
+            }
+        });
+        $('#cars li:has(.active)').removeClass('active');
+        $(event.target).parent().addClass('active')
+    }
+</script>

@@ -36,6 +36,10 @@ namespace BookingApp.WEB_MVC
                       "~/Content/jquery-ui.css",
                       "~/Content/datepicker.css"
                       ));
+
+            bundles.Add(new StyleBundle("~/Content/car").Include(
+                      "~/Content/car.css"
+                      ));
         }
     }
 }

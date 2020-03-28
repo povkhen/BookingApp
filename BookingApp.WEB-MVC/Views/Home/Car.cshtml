@@ -1,0 +1,46 @@
+﻿@using BookingApp.WEB_MVC.Models
+@using BookingApp.WEB_MVC.Helpers
+@model List<AllSeatsProcedureViewModel>
+@Styles.Render("~/Content/car")
+
+<br />
+
+<div class="train">
+    <div class="exit">
+        <div class="front">Toilet</div>
+    </div>
+    @{
+        
+        List<IEnumerable<AllSeatsProcedureViewModel>> groups = Model.Select((c, i) => new { c, i })
+                                             .GroupBy(x => x.i % 3)
+                                             .Select(g => g.Select(x => x.c))
+                                             .ToList();
+    }
+    <ol class="vagon train-body">
+        <li row row--1>
+            <ol class="seats">
+                @foreach (var seat in groups[0])
+                {
+                    @Html.SeatCheckButton(seat)
+                }
+            </ol>
+            <ol class="seats">
+                @foreach (var seat in groups[1])
+                {
+                    @Html.SeatCheckButton(seat)
+                }
+            </ol>
+            <ol class="seats">
+                @foreach (var seat in groups[2])
+                {
+                    @Html.SeatCheckButton(seat)
+                }
+            </ol>
+        </li>
+    </ol>
+    <div class="exit">
+        <div class="front">Toilet</div>
+    </div>
+</div>
+
+<div id="selected"></div>

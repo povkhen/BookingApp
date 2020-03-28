@@ -30,12 +30,12 @@ namespace BookingApp.WEB_MVC.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             return View();
         }
 
-        public async Task<ActionResult> About()
+        public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
@@ -62,26 +62,50 @@ namespace BookingApp.WEB_MVC.Controllers
             return new TripViewModel<SearchTripViewModel> { Models = trips, Bind = bind };
         }
 
+
         [HttpPost]
         public async Task<ActionResult> Booking(SearchTripViewModel item, SeatSearchViewModel item2, MainSearchBind bind)
         {
             IEnumerable<AllrSeatsProcedureDTO> allrSeatsDto = await _routeService.SearchAllSeatById(item.Id, bind.From, bind.To, item2.Car);
+
             var allseats = _mapperTrip.Map<IEnumerable<AllrSeatsProcedureDTO>, List<AllSeatsProcedureViewModel>>(allrSeatsDto);
+
+            foreach (var seat in allseats)
+            {
+                seat.Price = await _costService.GetCostOfSeatAsync(seat.PriceCoeff, item.Duration, (int)item.ArrivalTime.DayOfWeek);
+                seat.SalePrice = await _costService.GetSaleCostOfSeatAsync(seat.PriceCoeff, item.Duration, (int)item.ArrivalTime.DayOfWeek);
+            }
+
+            var cars = allseats
+                        .GroupBy(u => u.CarNumber)
+                        .Select(grp => grp.ToList())
+                        .ToList();
+
             AllSeatsViewModel<AllSeatsProcedureViewModel> viewModel =
                     new AllSeatsViewModel<AllSeatsProcedureViewModel>
                     {
                         Trip = GetTripViewModel(item, item2, bind),
-                        AllSeats = allseats
+                        Cars = cars
                     };
 
             return View(viewModel);
         }
 
-        public async Task<ActionResult> SearchPage()
+        [HttpPost]
+        public async Task<ActionResult> Car(IEnumerable<AllSeatsProcedureViewModel> allseats)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(allseats);
+            }
+            else return null;
+        }
+
+        public ActionResult SearchPage()
         {
             return View();
         }
-
+        
 
         [HttpPost]
         public async Task<ActionResult> Search(MainSearchBind bind)
@@ -100,7 +124,5 @@ namespace BookingApp.WEB_MVC.Controllers
                 return null;
             }
         }
-
-
     }
 }
