@@ -11,5 +11,6 @@ namespace BookingApp.Data.Interfaces
         Task<IEnumerable<TypeCarSeats>> GetFreeGroupingSeats(Guid tripId, string from, string to);
         Task<IEnumerable<AllrSeatsProcedure>> GetAllSeats(Guid tripId, string from, string to, string typecar);
         Task<IEnumerable<dynamic>> GetRouteInfo(string route);
+        Task<Guid?> NewCustomer(string firstName, string lastName, string typecustomer);
     }
 }

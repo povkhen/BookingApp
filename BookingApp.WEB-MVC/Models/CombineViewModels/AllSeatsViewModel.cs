@@ -11,7 +11,5 @@ namespace BookingApp.WEB_MVC.Models
         [JsonProperty(PropertyName = "Cars")]
         public IEnumerable<IEnumerable<T>> Cars { get; set; }
 
-        [JsonProperty(PropertyName = "CarInfo")]
-        public CarInfo CarInfo { get; set; }
     }
 }

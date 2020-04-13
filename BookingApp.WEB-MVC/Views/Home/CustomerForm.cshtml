@@ -1,0 +1,63 @@
+﻿@using BookingApp.WEB_MVC.Models
+@using BookingApp.WEB_MVC.Helpers
+@using BookingApp.WEB_MVC.Models.Binding
+@model List<TicketBind>
+
+<br />
+
+<div id="selected" class="jumbotron">
+	@if (Model.Any()){
+        foreach (var item in Model)
+        {
+			<p>Price: @item.Price</p>
+        }
+    }
+</div>
+
+<br />
+@{
+    foreach (var place in Model)
+    {
+        using (Ajax.BeginForm("Submit", new AjaxOptions { HttpMethod = "Post" }))
+        {
+			<div class="jumbotron">
+				<input type="hidden" name="Id" value="@Guid.NewGuid()" />
+				<input type="hidden" name="SeatId" value="@place.SeatId" />
+				<input type="hidden" name="TripId" value="@place.TripId" />
+				<input type="hidden" name="ArrivalStationId" value="@place.ArrivalStationId" />
+				<input type="hidden" name="DepartureStationId" value="@place.DepartureStationId" />
+				<input type="hidden" name="ArrivalTime" value="@place.ArrivalTime" />
+				<input type="hidden" name="ArrivalTime" value="@place.DepartureTime" />
+				<input type="hidden" name="Price" value="@place.Price" />
+			
+				<div class="row">
+					<div class="col-md-4">
+						@{
+                            var dummy = Model.FirstOrDefault();
+						}
+						<h2>Input first name</h2>
+						@Html.TextBoxFor(x => x[0].FirstName, new { @class = "form-control" });
+					</div>
+					<div class="col-md-4">
+						<h2>Input last name</h2>
+						@Html.TextBoxFor(x => x[0].LastName, new { @class = "form-control" });
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<h2>Select type: </h2>
+						@foreach (var type in Model[0].Types)
+                        {
+							<input type="radio" asp-for="TypeCustomer" value="@type" />@type<br />
+                        }
+					</div>
+					<div class="col-md-4">
+						<input class="btn btn-primary text-center" type="submit" value="Confirm">
+					</div>
+				</div>
+				<br />
+			</div>
+            }
+        }
+    }
+}

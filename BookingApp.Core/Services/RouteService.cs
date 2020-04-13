@@ -203,5 +203,26 @@ namespace BookingApp.Core.Services
                 }
             }
         }
+
+        public async Task<Guid?> GetIdStation(string name)
+        {
+            using (IDALSession _dalSession = new DalSession())
+            {
+                UnitOfWork unitOfWork = _dalSession.UnitOfWork;
+                unitOfWork.Begin();
+                try
+                {
+                    var id = await _context.StationRepo.FindStationIdByNameAsync(name);
+                    unitOfWork.Commit();
+                    return await Task.FromResult(id);
+
+                }
+                catch (KeyNotFoundException)
+                {
+                    unitOfWork.Rollback();
+                    return null;
+                }
+            }
+        }
     }
 }

@@ -56,5 +56,20 @@ namespace BookingApp.Data.Infrastructure
                 return result;
             }
         }
+        public async Task<Guid?> NewCustomer(string firstName, string lastName, string typecustomer)
+        {
+            using (var connection = DBConnection.CreateConnection())
+            {
+                var procedure = "[customer].[NEWCUSTOMER]";
+                var p = new DynamicParameters();
+                p.Add("FirstName", firstName);
+                p.Add("LastName", lastName);
+                p.Add("TypeCustomer", typecustomer);
+                p.Add("CustomerId", dbType: DbType.Guid, direction: ParameterDirection.Output);
+                await connection.QueryAsync<Guid?>(procedure, p, commandType: CommandType.StoredProcedure);
+                Guid? newID = p.Get<Guid?>("CustomerId");
+                return newID;
+            }
+        }
     }
 }

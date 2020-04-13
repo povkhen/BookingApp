@@ -34,7 +34,10 @@ namespace BookingApp.WEB_MVC.Helpers
 
             TagBuilder input = new TagBuilder("input");
             input.MergeAttribute("type", "checkbox");
+            input.MergeAttribute("name", id);
+            input.MergeAttribute("value", "true");
             input.MergeAttribute("id", id);
+
             if (!seat.Free)
             {
                 input.MergeAttribute("disabled", "");

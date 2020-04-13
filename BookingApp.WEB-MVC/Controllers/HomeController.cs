@@ -3,6 +3,7 @@ using BookingApp.Core.DTO;
 using BookingApp.Core.Interfaces;
 using BookingApp.WEB_MVC.Models;
 using BookingApp.WEB_MVC.Models.Binding;
+using BookingApp.WEB_MVC.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,10 +18,12 @@ namespace BookingApp.WEB_MVC.Controllers
         private readonly IMapper _mapperTrip;
         private readonly IRouteService _routeService;
         private readonly ICostService _costService;
-        public HomeController(IRouteService routeService, ICostService costService)
+        private readonly ITicketService _ticketService;
+        public HomeController(IRouteService routeService, ICostService costService, ITicketService ticketService)
         {
             _routeService = routeService;
             _costService = costService;
+            _ticketService = ticketService;
             _mapperTrip = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TripSearchDTO, SearchTripViewModel>();
@@ -42,6 +45,13 @@ namespace BookingApp.WEB_MVC.Controllers
             return View();
         }
 
+        public ActionResult Submit()
+        {
+            ViewBag.Message = "Submit.";
+
+            return View();
+        }
+
         public async Task<ActionResult> AutocompleteSearch(string term)
         {
             var stations = await _routeService.GetAllStations();
@@ -52,6 +62,7 @@ namespace BookingApp.WEB_MVC.Controllers
             return Json(models, JsonRequestBehavior.AllowGet);
         }
 
+
         public TripViewModel<SearchTripViewModel> GetTripViewModel(SearchTripViewModel item, SeatSearchViewModel item2, MainSearchBind bind)
         {
             List<SearchTripViewModel> trips = new List<SearchTripViewModel>();
@@ -60,6 +71,35 @@ namespace BookingApp.WEB_MVC.Controllers
             item.FreeSeats = car;
             trips.Add(item);
             return new TripViewModel<SearchTripViewModel> { Models = trips, Bind = bind };
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CustomerForm(SearchTripViewModel dummy,  MainSearchBind bind, Guid[] selectedObjects)
+        {
+            if (Request.IsAjaxRequest() && selectedObjects.Length != 0)
+            {
+                List<TicketBind> tickets = new List<TicketBind>();
+            
+                foreach (Guid guid in selectedObjects)
+                {
+                    tickets.Add(
+                        new TicketBind
+                        {
+                            TripId = dummy.Id,
+                            SeatId = guid,
+                            ArrivalStationId = await _routeService.GetIdStation(bind.To),
+                            DepartureStationId = await _routeService.GetIdStation(bind.From),
+                            ArrivalTime = dummy.ArrivalTime,
+                            DepartureTime = dummy.DepartureTime,
+                            //TODO:
+                            Price = "123"
+                        }
+                    );
+                }
+                return PartialView(tickets);
+                }
+            
+            else return null;
         }
 
 
@@ -92,7 +132,7 @@ namespace BookingApp.WEB_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Car(IEnumerable<AllSeatsProcedureViewModel> allseats)
+        public ActionResult Car(IEnumerable<AllSeatsProcedureViewModel> allseats)
         {
             if (Request.IsAjaxRequest())
             {
@@ -101,6 +141,7 @@ namespace BookingApp.WEB_MVC.Controllers
             else return null;
         }
 
+        
         public ActionResult SearchPage()
         {
             return View();
@@ -124,5 +165,7 @@ namespace BookingApp.WEB_MVC.Controllers
                 return null;
             }
         }
+
+
     }
 }

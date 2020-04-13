@@ -180,10 +180,10 @@
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Models\AllSeatsProcedureViewModel.cs" />
+    <Compile Include="Models\Binding\TicketBind.cs" />
     <Compile Include="Models\Binding\MainSearchBind.cs" />
     <Compile Include="Models\CombineViewModels\AllSeatsViewModel.cs" />
     <Compile Include="Models\CombineViewModels\TripViewModel.cs" />
-    <Compile Include="Models\CarInfo.cs" />
     <Compile Include="Models\SearchTripViewModel.cs" />
     <Compile Include="Models\SeatSearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,6 +215,7 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\infrastructure\binder.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -231,9 +232,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-3.5.1.debug.js" />
     <Content Include="Scripts\knockout-3.5.1.js" />
+    <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\model\Person.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\viewmodel\userviewmodel.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -251,6 +255,8 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\SearchPage.cshtml" />
     <Content Include="Views\Home\Car.cshtml" />
+    <Content Include="Views\Home\CustomerForm.cshtml" />
+    <Content Include="Views\Home\Submit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

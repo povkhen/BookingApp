@@ -6,29 +6,62 @@
     ViewBag.Title = "Booking";
 }
 <br />
+
 @Html.Partial("Search", Model.Trip)
 
 <ul class="nav nav-pills" id="cars">
-    
-@foreach (var seats in Model.Cars)
-{
-    var carNum = seats.FirstOrDefault().CarNumber.ToString();
-    string jsonString = seats.ToJSON();
-    <li class="aCar">
-        <a onclick="load('@jsonString');">@carNum</a>
-    </li>
-}
+
+    @foreach (var seats in Model.Cars)
+    {
+        var carNum = seats.FirstOrDefault().CarNumber.ToString();
+        string jsonString = seats.ToJSON();
+        <li class="aCar">
+            <a onclick="load('@jsonString');">@carNum</a>
+        </li>
+    }
 </ul>
 
 <div id="car">
-    @Html.Partial("Car", Model.Cars.FirstOrDefault())
+    @using (Ajax.BeginForm("CustomerForm", new AjaxOptions { UpdateTargetId = "forms", HttpMethod = "Post" }))
+    {
+        var item = Model.Trip.Models.FirstOrDefault();
+        <input type="hidden" name="Id" value="@item.Id" />
+        <input type="hidden" name="Train" value="@item.Train" />
+        <input type="hidden" name="Route" value="@item.Route" />
+        <input type="hidden" name="DepartureTime" value="@item.DepartureTime" />
+        <input type="hidden" name="ArrivalTime" value="@item.ArrivalTime" />
+        <input type="hidden" name="Duration" value="@item.Duration" />
+        <input type="hidden" name="From" value="@Model.Trip.Bind.From" />
+        <input type="hidden" name="To" value="@Model.Trip.Bind.To" />
+        <input type="hidden" name="Date" value="@Model.Trip.Bind.Date" />
+        @Html.Partial("Car", Model.Cars.FirstOrDefault())
+        <input class="btn btn-primary btn-xsh carseatwith" type="submit"
+               value="Choose" />
+
+    }
 </div>
 
+<div id="forms-conteiner" class="jumbotron">
+    <button class="close" id="hide">x</button>
+    <div id="forms">
+
+    </div>
+</div>
 
 <script>
     $(function () {
+        $("#forms-conteiner").hide();
         $('#cars li:first-child').addClass('active');
+        $("#hide").click(function () {
+            $("#forms").html("");
+            $("#forms-conteiner").hide();
         });
+
+        $("#show").click(function(){
+            $("forms-conteiner").show();
+        });
+    });
+
     function load(model) {
         $.ajax({
             type: "POST",

@@ -21,8 +21,6 @@ namespace BookingApp.Data.Interfaces
         IRepository<TypeCar> TypeCarRepo { get; }
         IRepository<TypeCustomer> TypeCustomerRepo { get; }
         IRepository<TypeSeat> TypeSeatRepo { get; }
-        IRepository<Cart> CartRepo { get; }
-        IRepository<CartItem> CartItemRepo { get; }
 
     }
 }

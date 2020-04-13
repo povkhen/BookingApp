@@ -10,7 +10,6 @@
         <div class="front">Toilet</div>
     </div>
     @{
-        
         List<IEnumerable<AllSeatsProcedureViewModel>> groups = Model.Select((c, i) => new { c, i })
                                              .GroupBy(x => x.i % 3)
                                              .Select(g => g.Select(x => x.c))
@@ -42,5 +41,3 @@
         <div class="front">Toilet</div>
     </div>
 </div>
-
-<div id="selected"></div>

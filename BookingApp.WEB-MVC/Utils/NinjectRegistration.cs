@@ -10,6 +10,7 @@ namespace BookingApp.WEB_MVC.Utils
         {
             Bind<IRouteService>().To<RouteService>();         
             Bind<ICostService>().To<CostService>();
+            Bind<ITicketService>().To<TicketService>();
         }
     }
 }
